@@ -1,0 +1,8 @@
+/node_modules/
+.gitignore
+.editorconfig
+README.md
+yarn-error.log
+.github
+log
+_data
