@@ -66,7 +66,7 @@ module.exports = {
       host: ['35.186.157.126'],
       ref: 'origin/new', // Branch Git để deploy.
       repo: 'git@github.com:skydark3004/training-devops-be.git', // Repository Git.
-      path: '/back-end', // Thư mục trên server.
+      path: '/install', // Thư mục trên server.
       'pre-deploy-local': "echo 'Deploying to development server'", // Script chạy trên máy local trước khi deploy.
       'post-deploy': 'pm2 reload ecosystem.config.js --env development', // Script chạy trên server sau khi deploy.
       'pre-setup': 'npm install && npm run build', // Script chạy trên server trước khi thiết lập.
