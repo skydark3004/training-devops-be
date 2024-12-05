@@ -58,4 +58,18 @@ module.exports = {
       time: true, // Show time on the console
     },
   ],
+
+  deploy: {
+    development: {
+      key: '~/.ssh/id_ed25519', // path to the public key to authenticate
+      user: 'thangl-vietis', // user to ssh
+      host: ['35.186.157.126'],
+      ref: 'origin/new', // Branch Git để deploy.
+      repo: 'git@github.com:skydark3004/training-devops-be.git', // Repository Git.
+      path: '/back-end-deploy-from-local', // Thư mục trên server.
+      'pre-deploy-local': "echo 'Deploying to development server'", // Script chạy trên máy local trước khi deploy.
+      'post-deploy': 'pm2 reload ecosystem.config.js --env development', // Script chạy trên server sau khi deploy.
+      'pre-setup': 'npm install && npm run build', // Script chạy trên server trước khi thiết lập.
+    },
+  },
 };
