@@ -5,3 +5,4 @@ export * from './logger.util';
 export * from './array.util';
 export * from './convert-to-image.util';
 export * from './password.util';
+export * from './object.util';

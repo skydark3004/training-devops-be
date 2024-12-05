@@ -6,3 +6,5 @@ export * from './validate-start-end-date';
 export * from './is-in-range-with-date';
 export * from './is-object';
 export * from './is-image-link';
+export * from './is-nullable';
+export * from './is-date-format-string';

@@ -51,6 +51,23 @@ export const arrayToObject = (arr: any[], uniqueKey: string, keyToValue?: string
 
 /**
  * @description
+ * convert array thông thường thành object với key chính là value của từng element
+ */
+export const arrayNormalToObject = (arr: any[]) => {
+  const result: any = {};
+  for (const element of arr) {
+    if (element instanceof Date) {
+      const formatKey = moment(element).toISOString();
+      result[formatKey] = element;
+    } else {
+      result[element] = element;
+    }
+  }
+  return result;
+};
+
+/**
+ * @description
  * Lấy ra unique value từ array của object bởi unique key
  */
 export function getUniqueValueFromArrayByUniqueKey(array: any[], key: string) {

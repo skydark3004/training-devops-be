@@ -4,9 +4,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { APP_CONFIG } from '../configs/app.config';
 import { UserRepository } from 'src/module-repository/repository';
 import { IPayload } from 'src/core/interfaces/payload.interface';
+import { EnumRoleCode } from 'src/core/enum';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'normal-jwt') {
   constructor(private readonly userRepository: UserRepository) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -19,9 +20,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!payload.roleCode) {
       throw new UnauthorizedException();
     }
-    const findUser = await this.userRepository.findById(payload.userId, { relations: { permission: true } });
-    if (!findUser) throw new UnauthorizedException('User not found');
-    payload.permissionList = findUser?.permission?.details;
+
+    if (payload.roleCode === EnumRoleCode.EMPLOYEE) {
+      const findUser = await this.userRepository.findById(payload.userId, { relations: { permission: true } });
+      if (!findUser) throw new UnauthorizedException('User not found');
+      payload.permissionList = findUser?.permission?.details;
+    }
+
     return payload;
   }
 }

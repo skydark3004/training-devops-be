@@ -1,5 +1,5 @@
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
-import { EnumMetadata, PermissionEnum } from 'src/core/enum';
+import { EnumMetadata, EnumPermission } from 'src/core/enum';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
 
 export function Auth(params: {
@@ -7,7 +7,7 @@ export function Auth(params: {
   allowAnonymous?: boolean;
   allowSecret?: boolean;
   onlyPostman?: true;
-  permissions?: PermissionEnum[];
+  permissions?: EnumPermission[];
 }) {
   return applyDecorators(
     SetMetadata(EnumMetadata.ROLES, params.roles),

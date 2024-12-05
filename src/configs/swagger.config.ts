@@ -1,11 +1,10 @@
 import { HttpServer, INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NextFunction, Request, Response } from 'express';
-import { APP_CONFIG } from './app.config';
 
 const api_documentation_credentials = {
-  name: APP_CONFIG.ENV.SWAGGER.USERNAME,
-  pass: APP_CONFIG.ENV.SWAGGER.PASSWORD,
+  name: 'admin',
+  pass: 'admin',
 };
 
 function parseAuthHeader(input: string): { name: string; pass: string } {

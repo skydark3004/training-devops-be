@@ -1,39 +1,48 @@
-import { Column, Entity } from 'typeorm';
-import { DiscountUnitEnum, DurationUnitEnum, PriceUnitEnum, StatusEnum } from '../enum';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { EnumDiscountUnit, EnumDurationUnit, EnumPriceUnit } from '../enum';
 import { BaseEntity } from './base/base.entity';
+import { PurchaseEntity } from './package-map-user.entity';
 
 @Entity('package')
-export class Package extends BaseEntity {
-  @Column({ nullable: false, type: 'text', unique: true })
+export class PackageEntity extends BaseEntity {
+  @Column({ nullable: true, type: 'text', unique: true })
   name: string;
 
   @Column({ nullable: true, type: 'text', default: '' })
   description: string;
 
-  @Column({ nullable: false, type: 'enum', enum: DurationUnitEnum })
-  durationUnit: DurationUnitEnum;
+  @Column({ nullable: true, type: 'enum', enum: EnumDurationUnit })
+  durationUnit: EnumDurationUnit;
 
-  @Column({ nullable: false, type: 'int' })
+  @Column({ nullable: true, type: 'int' })
   durationValue: number;
 
-  @Column({ nullable: false, type: 'int' })
+  @Column({ nullable: true, type: 'float', default: 0 })
   originalPrice: number;
 
-  @Column({ nullable: false, type: 'enum', enum: DiscountUnitEnum, default: DiscountUnitEnum.PERCENT })
-  discountUnit: DiscountUnitEnum;
+  @Column({ nullable: true, type: 'enum', enum: EnumDiscountUnit, default: EnumDiscountUnit.PERCENT })
+  discountUnit: EnumDiscountUnit;
 
-  @Column({ nullable: false, type: 'int', default: 0 })
+  @Column({ nullable: true, type: 'int', default: 0 })
   discountValue: number;
 
-  @Column({ nullable: false, type: 'int', default: 0 })
+  @Column({ nullable: true, type: 'float', default: 0 })
   priceAfterDiscount: number;
 
-  @Column({ nullable: false, type: 'enum', enum: PriceUnitEnum, default: PriceUnitEnum.VND })
-  priceUnit: PriceUnitEnum;
+  @Column({ nullable: true, type: 'enum', enum: EnumPriceUnit, default: EnumPriceUnit.VND })
+  priceUnit: EnumPriceUnit;
 
-  @Column({ nullable: false, type: 'boolean' })
+  @Column({ nullable: true, type: 'boolean' })
   isShowDiscount: boolean;
 
-  @Column({ nullable: false, type: 'enum', enum: StatusEnum, default: StatusEnum.ACTIVE })
-  status: StatusEnum;
+  @Column({ nullable: true, type: 'text', default: null, unique: true })
+  storeId: string;
+
+  /* relations */
+
+  @OneToMany(() => PurchaseEntity, (entity) => entity.package)
+  purchase: PurchaseEntity[];
+
+  /*   @OneToMany(() => UsedVoucherEntity, (entity) => entity.package)
+  usedVouchers: UsedVoucherEntity[]; */
 }

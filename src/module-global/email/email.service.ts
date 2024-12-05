@@ -1,7 +1,7 @@
 import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { IOptionSendEmail } from './email.interface';
-//import { EnumActionSendEmail } from 'src/core/enum';
+import { EnumActionSendEmail } from 'src/core/enum';
 
 @Injectable()
 export class EmailService {
@@ -16,14 +16,15 @@ export class EmailService {
       context: params.contentMail,
     };
 
-    /*     switch (params.action) {
-      case EnumActionSendEmail.INFORM_ERROR_FOR_OWNER:
-        options.template = 'error.ejs';
-        break;
+    switch (params.action) {
       case EnumActionSendEmail.INFORM_MESSAGE_FOR_OWNER:
         options.template = 'inform-message.ejs';
         break;
-    } */
+
+      case EnumActionSendEmail.INTERAL_SERVER:
+        options.template = 'error.ejs';
+        break;
+    }
     await this.mailService.sendMail(options);
   }
 }

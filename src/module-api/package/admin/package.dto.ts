@@ -1,14 +1,15 @@
 import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { PaginationDto } from 'src/core/dto';
-import { DurationUnitEnum, StatusEnum } from 'src/core/enum';
+import { EnumDurationUnit } from 'src/core/enum';
+import { ParseBooleanStringTrueFalse } from 'src/pipe';
 
 export class ListPackageDto extends PaginationDto {
   @IsOptional()
   keySearch: string;
 
   @IsOptional()
-  @IsEnum(StatusEnum)
-  status: StatusEnum;
+  @ParseBooleanStringTrueFalse({ isIgnoreIfUndefined: true })
+  status: boolean;
 }
 
 export class CreatePackageDto {
@@ -19,8 +20,8 @@ export class CreatePackageDto {
   @IsString()
   description: string;
 
-  @IsEnum(DurationUnitEnum)
-  durationUnit: DurationUnitEnum;
+  @IsEnum(EnumDurationUnit)
+  durationUnit: EnumDurationUnit;
 
   @IsNumber()
   @Min(1)
@@ -37,8 +38,8 @@ export class CreatePackageDto {
   @IsBoolean()
   isShowDiscount: boolean;
 
-  @IsEnum(StatusEnum)
-  status: StatusEnum;
+  @IsBoolean()
+  status: boolean;
 }
 
 export class UpdatePackageDto {
@@ -49,8 +50,8 @@ export class UpdatePackageDto {
   @IsString()
   description: string;
 
-  @IsEnum(DurationUnitEnum)
-  durationUnit: DurationUnitEnum;
+  @IsEnum(EnumDurationUnit)
+  durationUnit: EnumDurationUnit;
 
   @IsNumber()
   @Min(1)
@@ -67,6 +68,6 @@ export class UpdatePackageDto {
   @IsBoolean()
   isShowDiscount: boolean;
 
-  @IsEnum(StatusEnum)
-  status: StatusEnum;
+  @IsBoolean()
+  status: boolean;
 }

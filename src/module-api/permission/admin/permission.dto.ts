@@ -1,19 +1,19 @@
-import { ArrayMinSize, ArrayUnique, IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import { ArrayMinSize, ArrayUnique, IsArray, IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { PaginationDto } from 'src/core/dto';
-import { PermissionEnum, StatusEnum } from 'src/core/enum';
-import { ParseJson } from 'src/pipe';
+import { EnumPermission } from 'src/core/enum';
+import { ParseBooleanStringTrueFalse, ParseJson } from 'src/pipe';
 
 export class ListPermissionDto extends PaginationDto {
   @IsOptional()
   name: string;
 
   @IsOptional()
-  @IsEnum(StatusEnum)
-  status: StatusEnum;
+  @ParseBooleanStringTrueFalse({ isIgnoreIfUndefined: true })
+  status: boolean;
 
   @IsOptional()
   @ParseJson({ isIgnoreIfUndefined: true })
-  permissionCodes?: PermissionEnum[];
+  permissionCodes?: EnumPermission[];
 }
 
 export class CreatePermissionDto {
@@ -21,13 +21,13 @@ export class CreatePermissionDto {
   name: string;
 
   @IsArray()
-  @IsEnum(PermissionEnum, { each: true })
+  @IsEnum(EnumPermission, { each: true })
   @ArrayMinSize(1)
   @ArrayUnique((value) => value)
-  details: PermissionEnum[];
+  details: EnumPermission[];
 
-  @IsEnum(StatusEnum)
-  status: StatusEnum;
+  @IsBoolean()
+  status: boolean;
 }
 
 export class UpdatePermissionDto {
@@ -37,12 +37,12 @@ export class UpdatePermissionDto {
 
   @IsOptional()
   @IsArray()
-  @IsEnum(PermissionEnum, { each: true })
+  @IsEnum(EnumPermission, { each: true })
   @ArrayMinSize(1)
   @ArrayUnique((value) => value)
-  details: PermissionEnum[];
+  details: EnumPermission[];
 
   @IsOptional()
-  @IsEnum(StatusEnum)
-  status: StatusEnum;
+  @IsBoolean()
+  status: boolean;
 }

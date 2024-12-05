@@ -1,65 +1,77 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import _ from 'lodash';
-
-import { ResponseErrorEnum } from './user.enum';
-import { UserHelper } from './user.helper';
-import { CreateUserDto, ListUserDto, UpdateUserDto } from './user.dto';
+import { EnumResponseError } from './user.enum';
+import { CreateEmployeeDto, ListEmployeeDto, UpdateEmployeeDto } from './dto';
 import { PermissionRepository, UserRepository } from 'src/module-repository/repository';
-import { ILike } from 'typeorm';
 import { hashPassword } from 'src/libs/utils';
-import { RoleCodeEnum } from 'src/core/enum';
+import { EnumPrefixRedis, EnumRoleCode } from 'src/core/enum';
 
 @Injectable()
-export class UserService {
+export class UserServiceAdmin {
   constructor(
-    private helper: UserHelper,
     private readonly userRepository: UserRepository,
     private readonly permissionRepository: PermissionRepository,
   ) {}
 
-  async getList(query: ListUserDto) {
+  async getList(query: ListEmployeeDto) {
     const pagination = _.pick(query, ['page', 'pageSize']);
 
-    const conditions: any = {
-      roleCode: RoleCodeEnum.EMPLOYEE,
-    };
-    if (query.username) {
-      conditions.username = ILike(`%${query.username}%`);
+    const queryBuilder = this.userRepository.typeOrm.createQueryBuilder('user').leftJoinAndSelect('user.permission', 'permission').where('1=1');
+
+    if (query.keySearch) {
+      queryBuilder.andWhere('(user.fullName ILIKE :keySearch OR user.username ILIKE :keySearch OR user.phoneNumber ILIKE :keySearch)', {
+        keySearch: `%${query?.keySearch}%`,
+      });
     }
+
     if (query.status) {
-      conditions.status = query.status;
+      queryBuilder.andWhere('user.status = :status', { status: query.status });
     }
-    if (query.phoneNumber) {
-      conditions.phoneNumber = ILike(`%${query.phoneNumber}%`);
+
+    if (query.roleCode) {
+      queryBuilder.andWhere('user.roleCode = :roleCode', { roleCode: query.roleCode });
     }
 
     if (query.permissionId) {
-      const permission = await this.permissionRepository.findById(query.permissionId);
-      if (!permission) throw new BadRequestException('Không tìm thấy quyền hạn');
-      conditions.permission = {};
-      conditions.permission.id = query.permissionId;
+      queryBuilder.andWhere('permission.id = :permissionId', { permissionId: query.permissionId });
     }
 
-    const list = await this.userRepository.findWithPaginate({
-      conditions,
-      pagination,
-      relations: {
-        permission: true,
-      },
-    });
+    const list = await this.userRepository.queryBuilderWithPaginate({ pagination: pagination, queryBuilder });
 
     return list;
   }
 
   async getById(id: string) {
-    const getById = await this.userRepository.findById(id, { relations: { permission: true } });
-    if (!getById) throw new BadRequestException(ResponseErrorEnum.USER_NOT_FOUND);
+    const getById = await this.userRepository.typeOrm
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.permission', 'permission')
+      .where('user.id = :id', { id })
+      .select([
+        'user.id',
+        'user.username',
+        'user.fullName',
+        'user.phoneNumber',
+        'user.permissionId',
+        'user.status',
+        'user.description',
+        'user.permission',
+        'user.roleCode',
+        'permission.id',
+        'permission.name',
+        'permission.details',
+      ])
+      .getOne();
+    if (!getById) throw new BadRequestException(EnumResponseError.USER_NOT_FOUND);
+
     return getById;
   }
 
-  async create(body: CreateUserDto) {
-    const getByUsername = await this.userRepository.findOneBy({ username: body.username });
-    if (getByUsername) throw new BadRequestException(`${ResponseErrorEnum.USER_EXIST} với ${body.username}`);
+  async create(body: CreateEmployeeDto) {
+    const getByUsername = await this.userRepository.typeOrm.findOneBy({ username: body.username });
+    if (getByUsername) throw new BadRequestException(`${EnumResponseError.USER_EXIST} với email ${body.username}`);
+
+    const permission = await this.permissionRepository.findById(body.permissionId);
+    if (!permission) throw new BadRequestException('Không tìm thấy quyền hạn');
 
     const paramToCreate: any = {
       username: body.username,
@@ -67,53 +79,34 @@ export class UserService {
       description: body.description,
       password: await hashPassword(body.password),
       phoneNumber: body.phoneNumber,
-      gender: body.gender,
-      roleCode: body.roleCode,
+      roleCode: EnumRoleCode.EMPLOYEE,
       status: body.status,
+      permissionId: body.permissionId,
     };
 
-    const permission = await this.permissionRepository.findById(body.permissionId);
-    if (!permission) throw new BadRequestException('Không tìm thấy quyền hạn');
-    paramToCreate.permission = body.permissionId;
+    const entity = this.userRepository.typeOrm.create(paramToCreate);
 
-    const entity = this.userRepository.create(paramToCreate);
-
-    const create: any = await this.userRepository.save(entity);
+    const create: any = await this.userRepository.typeOrm.save(entity);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...rest } = create;
 
     return rest;
   }
 
-  async updateById(id: string, body: UpdateUserDto) {
-    console.log('body:', body);
-    const getById = await this.userRepository.findOneBy({ id });
-    if (!getById) throw new BadRequestException(ResponseErrorEnum.USER_NOT_FOUND);
+  async updateById(id: string, body: UpdateEmployeeDto) {
+    const getById = await this.userRepository.typeOrm.findOneBy({ id });
+    if (!getById) throw new BadRequestException(EnumResponseError.USER_NOT_FOUND);
 
-    const updateParams: any = {};
-
-    if (body.status) updateParams.status = body.status;
-
-    if (body.description) updateParams.description = body.description;
-
-    if (body.fullName) updateParams.fullName = body.fullName;
-
-    if (body.phoneNumber) updateParams.phoneNumber = body.phoneNumber;
+    const updateParams: any = _.pick(body, ['fullName', 'phoneNumber', 'status', 'description']);
 
     if (body.permissionId) {
       const permission = await this.permissionRepository.findById(body.permissionId);
       if (!permission) throw new BadRequestException('Không tìm thấy quyền hạn');
-      updateParams.permission = body.permissionId;
+      updateParams.permissionId = body.permissionId;
     }
 
-    if (body.gender) updateParams.gender = body.gender;
-
-    if (body.status) updateParams.status = body.status;
-
-    console.log('updateParams::', updateParams);
-
-    await this.userRepository.update({ id }, updateParams);
-    const result = await this.userRepository.findOneBy({ id });
+    await this.userRepository.typeOrm.update({ id }, updateParams);
+    const result = await this.getById(id);
 
     return result;
   }

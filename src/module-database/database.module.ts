@@ -1,4 +1,5 @@
 import { Logger, Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_CONFIG } from 'src/configs/app.config';
 import { ormConfig } from 'src/configs/orm.config';
 import { ProvideOfProvidersEnum } from 'src/core/enum';
@@ -23,6 +24,7 @@ export const databaseProviders = {
 };
 
 @Module({
+  imports: [TypeOrmModule.forRoot(ormConfig)],
   providers: [databaseProviders],
   exports: [databaseProviders],
 })

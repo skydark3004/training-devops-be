@@ -1,4 +1,4 @@
-export enum PermissionEnum {
+export enum EnumPermission {
   EMPLOYEE = 'EMPLOYEE',
   CUSTOMER = 'CUSTOMER',
   COURSE = 'COURSE',

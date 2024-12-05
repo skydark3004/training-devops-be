@@ -42,3 +42,6 @@ ormlogs.log
 .env
 /log
 firebase.json
+credentials-google-sheet.json
+
+.env-uat

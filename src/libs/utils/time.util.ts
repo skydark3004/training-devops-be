@@ -200,3 +200,122 @@ export function isInRangeWithoutEqualWithDate(input: { date: Date; start: Date; 
   const format_end = moment(input.end);
   return format_date.isAfter(format_start) && format_date.isBefore(format_end);
 }
+
+export function getStartOfCurrentWeek({ typeOfReturn, format }: { typeOfReturn: 'string' | 'date'; format?: string }) {
+  const weekStart = moment().tz('UTC').add(7, 'hours');
+  if (weekStart.day() === 0) {
+    weekStart.subtract(1, 'days');
+  }
+  weekStart.startOf('day').set('day', 1);
+
+  if (typeOfReturn === 'date') {
+    return weekStart.toDate();
+  } else {
+    return weekStart.format(format);
+  }
+}
+
+export function getEndOfCurrentWeek({ typeOfReturn, format }: { typeOfReturn: 'string' | 'date'; format?: string }) {
+  const weekEnd = moment().tz('UTC').add(7, 'hours');
+  // nếu đang là CN
+  if (weekEnd.day() === 0) {
+    weekEnd.endOf('day');
+  } else {
+    weekEnd.set('day', 7).endOf('day');
+  }
+
+  if (typeOfReturn === 'date') {
+    return weekEnd.toDate();
+  } else {
+    return weekEnd.format(format);
+  }
+}
+
+export function getCurrentWeekInMonth() {
+  const weeksInMonth = [1, 2, 3, 4, 5];
+  const currentDateInMonth = parseInt((moment().tz('UTC').add(7, 'hours').date() / 7).toString());
+  return weeksInMonth[currentDateInMonth];
+}
+
+export function getCurrentMonthInYear() {
+  const result = moment().tz('UTC').add(7, 'hours').month() + 1;
+  return result;
+}
+
+export function getDayInWeekDescription(dayInWeek: number) {
+  switch (dayInWeek) {
+    case 0:
+      return 'SUNDAY';
+    case 1:
+      return 'MONDAY';
+    case 2:
+      return 'TUESDAY';
+    case 3:
+      return 'WEDNESDAY';
+    case 4:
+      return 'THURSDAY';
+    case 5:
+      return 'FRIDAY';
+    case 6:
+      return 'SATURDAY';
+  }
+}
+
+export function getStartDateOfCurrentMonth({ typeOfReturn, format }: { typeOfReturn: 'string' | 'date'; format?: string }) {
+  const start = moment().tz('UTC').add(7, 'hours').startOf('month');
+  if (typeOfReturn === 'date') {
+    return start.toDate();
+  } else {
+    return start.format(format);
+  }
+}
+
+export function getEndDateOfCurrentMonth({ typeOfReturn, format }: { typeOfReturn: 'string' | 'date'; format?: string }) {
+  const end = moment().tz('UTC').add(7, 'hours').endOf('month');
+  if (typeOfReturn === 'date') {
+    return end.toDate();
+  } else {
+    return end.format(format);
+  }
+}
+
+export function getStartDateOfMonth(month: number, year?: number) {
+  let result = moment().tz('UTC').add(7, 'hours');
+  if (year) result = result.year(year);
+
+  return result
+    .startOf('month')
+    .set('month', month - 1) // tháng 1 bắt đầu từ 0
+    .toDate();
+}
+
+export function getEndDateOfMonth(month: number, year?: number) {
+  let result = moment().tz('UTC').add(7, 'hours');
+  if (year) result = result.year(year);
+
+  return result
+    .set('month', month - 1) // tháng 1 bắt đầu từ 0
+    .endOf('month')
+    .toDate();
+}
+
+export function getCurrentWeekDates(paramsAddToDate?: any): any[] {
+  const weekStart = moment().tz('UTC').add(7, 'hours');
+  if (weekStart.day() === 0) {
+    weekStart.subtract(1, 'days');
+  }
+  weekStart.startOf('day').set('day', 1);
+
+  const weekDates: any[] = [];
+
+  for (let i = 0; i <= 6; i++) {
+    const currentDay = weekStart.clone().add(i, 'days');
+    weekDates.push({
+      date: currentDay.startOf('day').toISOString(),
+      dayInWeek: i,
+      ...(paramsAddToDate || {}),
+    });
+  }
+
+  return weekDates;
+}

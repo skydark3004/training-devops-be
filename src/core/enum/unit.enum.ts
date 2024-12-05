@@ -1,15 +1,15 @@
-export enum DurationUnitEnum {
+export enum EnumDurationUnit {
   DAY = 'DAY',
   MONTH = 'MONTH',
   YEAR = 'YEAR',
 }
 
-export enum DiscountUnitEnum {
+export enum EnumDiscountUnit {
   PERCENT = 'PERCENT',
   DIRECT_PRICE = 'DIRECT_PRICE',
 }
 
-export enum PriceUnitEnum {
+export enum EnumPriceUnit {
   DOLLAR = 'DOLLAR',
   VND = 'VND',
 }

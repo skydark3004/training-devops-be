@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import _ from 'lodash';
+import { isUndefined, pick } from 'lodash';
 
-import { ResponseErrorEnum } from './permission.enum';
+import { EnumResponseError } from './permission.enum';
 import { PermissionHelper } from './permission.helper';
 import { CreatePermissionDto, ListPermissionDto, UpdatePermissionDto } from './permission.dto';
 import { PermissionRepository } from 'src/module-repository/repository';
-import { ArrayContains, ILike } from 'typeorm';
+import { ArrayContains, ILike, Not } from 'typeorm';
 
 @Injectable()
 export class PermissionService {
@@ -15,7 +15,7 @@ export class PermissionService {
   ) {}
 
   async getList(query: ListPermissionDto) {
-    const pagination = _.pick(query, ['page', 'pageSize']);
+    const pagination = pick(query, ['page', 'pageSize']);
 
     const conditions: any = {};
     if (query.name) {
@@ -36,40 +36,40 @@ export class PermissionService {
   }
 
   async getById(id: string) {
-    const getById = await this.permissionRepository.findOneBy({ id });
-    if (!getById) throw new BadRequestException(ResponseErrorEnum.PERMISSION_NOT_FOUND);
+    const getById = await this.permissionRepository.typeOrm.findOneBy({ id });
+    if (!getById) throw new BadRequestException(EnumResponseError.PERMISSION_NOT_FOUND);
 
     return getById;
   }
 
   async create(body: CreatePermissionDto) {
-    const getByName = await this.permissionRepository.findOneBy({ name: body.name });
-    if (getByName) throw new BadRequestException(`${ResponseErrorEnum.PERMISSION_EXIST} với tên ${body.name}`);
+    const getByName = await this.permissionRepository.typeOrm.findOneBy({ name: body.name });
+    if (getByName) throw new BadRequestException(`${EnumResponseError.PERMISSION_EXIST} với tên ${body.name}`);
 
-    const entity = this.permissionRepository.create(body);
-    const create = await this.permissionRepository.save(entity);
+    const entity = this.permissionRepository.typeOrm.create(body);
+    const create = await this.permissionRepository.typeOrm.save(entity);
 
     return create;
   }
 
   async updateById(id: string, body: UpdatePermissionDto) {
-    const getById = await this.permissionRepository.findOneBy({ id });
-    if (!getById) throw new BadRequestException(ResponseErrorEnum.PERMISSION_NOT_FOUND);
+    const getById = await this.permissionRepository.typeOrm.findOneBy({ id });
+    if (!getById) throw new BadRequestException(EnumResponseError.PERMISSION_NOT_FOUND);
 
     const updateParams: any = {};
 
     if (body.name) {
-      const getByName = await this.permissionRepository.findOneBy({ name: body.name });
-      if (getByName && body.name !== getByName.name) throw new BadRequestException(`${ResponseErrorEnum.PERMISSION_EXIST} với tên ${body.name}`);
+      const isExist = await this.permissionRepository.typeOrm.exists({ where: { name: body.name, id: Not(getById.id) } });
+      if (isExist) throw new BadRequestException(`${EnumResponseError.PERMISSION_EXIST} với tên ${body.name}`);
       updateParams.name = body.name;
     }
 
     if (body.details && body.details.length) updateParams.details = body.details;
 
-    if (body.status) updateParams.status = body.status;
+    if (!isUndefined(body.status)) updateParams.status = body.status;
 
-    await this.permissionRepository.update({ id }, updateParams);
-    const result = await this.permissionRepository.findOneBy({ id });
+    await this.permissionRepository.typeOrm.update({ id }, updateParams);
+    const result = await this.permissionRepository.typeOrm.findOneBy({ id });
 
     return result;
   }

@@ -1,12 +1,9 @@
 import * as path from 'path';
 import envConfig from './env.config';
 
-const ENV = envConfig;
-const ROOT = path.normalize(__dirname + '/../..');
-
 export const APP_CONFIG = {
-  ROOT: ROOT,
-  ENV: ENV,
+  ROOT: path.normalize(__dirname + '/../..'),
+  ENV: envConfig,
   IS_PRODUCTION: process.env.NODE_ENV === 'production',
   IS_DEVELOP: process.env.NODE_ENV === 'develop',
   IS_STAGING: process.env.NODE_ENV === 'staging',

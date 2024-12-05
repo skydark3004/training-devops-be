@@ -14,7 +14,7 @@ export default function (app: INestApplication) {
     credentials: true,
     maxAge: 86400,
   });
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({ limit: '50mb' }));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -22,7 +22,8 @@ export default function (app: INestApplication) {
     }),
   );
   app.use(json({ limit: '50mb' }));
-  APP_CONFIG.IS_LOCAL && app.use(morgan('dev'));
+  app.use(morgan('dev'));
+  //APP_CONFIG.IS_LOCAL && app.use(morgan('dev'));
   app.use(compression());
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 }
