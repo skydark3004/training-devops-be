@@ -1,7 +1,6 @@
 import { APP_CONFIG } from './app.config';
 import * as path from 'path';
 import { DataSourceOptions } from 'typeorm';
-import { MyCustomLogger } from './logger-typeorm.config';
 
 export const ormConfig: DataSourceOptions = {
   name: 'default',
