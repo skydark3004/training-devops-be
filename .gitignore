@@ -42,3 +42,4 @@ ormlogs.log
 .env
 /log
 firebase.json
+ecosystem.config.js
