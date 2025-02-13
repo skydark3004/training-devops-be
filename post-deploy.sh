@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd /home/thangl-vietis/deploy-pm2/current
 npm install
 npm run build
