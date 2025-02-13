@@ -65,7 +65,7 @@ module.exports = {
       repo: 'git@github.com:skydark3004/training-devops-be.git', // Repository Git.
       path: '/home/thangl-vietis/deploy-pm2', // Thư mục trên server.
       'pre-deploy-local': "echo 'Deploying to production server'", // Script chạy trên máy local trước khi deploy.
-      'post-deploy': 'npm install && npm run build && pm2 deploy ecosystem.config.js', // Script chạy trên server sau khi deploy.
+      'post-deploy': 'cd /home/thangl-vietis/deploy-pm2 && bash post-deploy.sh', // Script chạy trên server sau khi deploy.
       'pre-setup': "echo 'Running pre-setup tasks'", // Script chạy trên server trước khi thiết lập.
     },
   },
