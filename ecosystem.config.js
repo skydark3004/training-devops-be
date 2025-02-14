@@ -16,6 +16,7 @@ module.exports = {
         POSTGRESQL_HOST: 'localhost',
         POSTGRESQL_PORT: 5432,
         POSTGRESQL_NAME: 'learn-devops',
+        SECURE_JWT_SECRET_KEY: 'secret-key',
       },
       env_staging: {
         NODE_ENV: 'staging',
@@ -26,6 +27,7 @@ module.exports = {
         POSTGRESQL_PORT: 5432,
         POSTGRESQL_NAME: 'learn-devops',
         LOGGING_QUERY_SQL: true,
+        SECURE_JWT_SECRET_KEY: 'secret-key',
       },
 
       watch: false, // watch change file
