@@ -67,7 +67,8 @@ module.exports = {
       'pre-deploy-local': "echo 'Deploying to production server'", // Script chạy trên máy local trước khi deploy.
       'post-deploy':
         'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && cd /home/thangl-vietis/deploy-pm2/current && pm2 restart ecosystem.config.js --env development', // Script chạy trên server sau khi deploy.
-      'pre-deploy': 'cd /home/thangl-vietis/deploy-pm2/current; npm install; npm run build',
+      'pre-deploy':
+        'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && cd /home/thangl-vietis/deploy-pm2/current; npm install; npm run build',
     },
   },
 };
