@@ -66,7 +66,7 @@ module.exports = {
       path: '/home/thangl-vietis/deploy-pm2', // Thư mục trên server.
       'pre-deploy-local': "echo 'Deploying to production server'", // Script chạy trên máy local trước khi deploy.
       'post-deploy':
-        'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && cd /home/thangl-vietis/deploy-pm2/current && npm instal && npm run build && pm2 restart ecosystem.config.js --env development', // Script chạy trên server sau khi deploy.
+        'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && cd /home/thangl-vietis/deploy-pm2/source && npm instal && npm run build && pm2 restart ecosystem.config.js --env development', // Script chạy trên server sau khi deploy.
       /*       'pre-deploy':
         'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && cd /home/thangl-vietis/deploy-pm2/current; npm install; npm run build', */
     },
