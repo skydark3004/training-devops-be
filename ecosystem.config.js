@@ -67,7 +67,7 @@ module.exports = {
       'pre-deploy-local': "echo 'Deploying to development server...'",
       'pre-deploy': 'pwd',
       //'post-deploy': `export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && npm install  && npm run build && pm2 restart ecosystem.config.js`,
-      'post-deploy': `export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\" && pm2 start ecosystem.config.js && pm2 ls`,
+      'post-deploy': `/home/thangl-vietis/.nvm/versions/node/v20.11.0/bin/pm2 restart ecosystem.config.js`,
       /*       'pre-deploy':
       
       /*       'pre-deploy':
