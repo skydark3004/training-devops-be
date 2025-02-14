@@ -64,11 +64,16 @@ module.exports = {
       ref: 'origin/main', // Branch Git để deploy.
       repo: 'git@github.com:skydark3004/training-devops-be.git', // Repository Git.
       path: '/home/thangl-vietis/deploy-pm2', // Thư mục trên server.
-      'pre-deploy-local': "echo 'Deploying to production server'", // Script chạy trên máy local trước khi deploy.
+      'pre-deploy-local': "echo 'Deploying to development server...'",
       'pre-deploy': 'pwd',
-      //'post-deploy': 'npm install && npm run build && pm2 start ecosystem.config.js', // Script chạy trên server sau khi deploy.
-      'post-deploy':
-        'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && npm install && npm run build && pm2 start ecosystem.config.js', // Script chạy trên server sau khi deploy.
+      'post-deploy': `
+        export NVM_DIR="$HOME/.nvm" 
+        && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" 
+        && cd /home/thangl-vietis/deploy-pm2/current 
+        && npm install 
+        && npm run build 
+        && pm2 restart ecosystem.config.js --env development
+      `,
       /*       'pre-deploy':
       
       /*       'pre-deploy':
