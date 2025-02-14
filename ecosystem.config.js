@@ -68,8 +68,7 @@ module.exports = {
       'pre-deploy': 'pwd',
       'post-deploy': `
         export NVM_DIR="$HOME/.nvm" 
-        && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" 
-        && cd /home/thangl-vietis/deploy-pm2/current 
+        && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
         && npm install 
         && npm run build 
         && pm2 restart ecosystem.config.js --env development
