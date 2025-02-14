@@ -66,7 +66,8 @@ module.exports = {
       path: '/home/thangl-vietis/deploy-pm2', // Thư mục trên server.
       'pre-deploy-local': "echo 'Deploying to production server'", // Script chạy trên máy local trước khi deploy.
       'pre-deploy': 'pwd',
-      'post-deploy': 'npm install && npm run build && pm2 start ecosystem.config.js', // Script chạy trên server sau khi deploy.
+      //'post-deploy': 'npm install && npm run build && pm2 start ecosystem.config.js', // Script chạy trên server sau khi deploy.
+      'post-deploy': 'pwd', // Script chạy trên server sau khi deploy.
       /*       'pre-deploy':
       
       /*       'pre-deploy':
