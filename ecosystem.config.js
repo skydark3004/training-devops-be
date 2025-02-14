@@ -32,12 +32,12 @@ module.exports = {
       ignore_watch: ['node_modules', 'logs'],
 
       // --- Log ---
-      output: './logs/out.log',
-      error: './logs/error.log',
+      output: './logs/out.json',
+      error: './logs/error.json',
       log_type: 'json',
       merge_logs: true, // Merge logs from all instances
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
-      log_file: './logs/combined.log', // file path for both output and error logs (disabled by default)
+      log_file: './logs/combined.json', // file path for both output and error logs (disabled by default)
 
       // --- Resources ---
       max_memory_restart: '500M', // memory specified
