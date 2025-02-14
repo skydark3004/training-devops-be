@@ -11,4 +11,4 @@ cd /home/thangl-vietis/deploy-pm2/current
 
 npm install
 npm run build
-pm2 restart ecosystem.config.js --env development
+pm2 restart ecosystem.config.js
