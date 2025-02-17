@@ -61,23 +61,21 @@ module.exports = {
   ],
   deploy: {
     development: {
-      user: 'thangl-vietis', // Tên user SSH để deploy.
-      host: ['34.124.149.226'], // Địa chỉ IP hoặc hostname server.
-      ref: 'origin/main', // Branch Git để deploy.
+      user: 'thangl-vietis', // user to ssh
+      host: ['34.124.149.226'], // IP server.
+      ref: 'origin/main', // Branch Git to deploy
       repo: 'git@github.com:skydark3004/training-devops-be.git', // Repository Git.
-      path: '/home/thangl-vietis/deploy-pm2', // Thư mục trên server.
+      path: '/home/thangl-vietis/deploy-pm2', // directory to folder pm2 deploy
       'pre-deploy-local': "echo 'Deploying to development server...'",
-      'pre-deploy': 'pwd',
       'post-deploy': `sh deploy.sh`,
     },
     staging: {
-      user: 'thangl-vietis', // Tên user SSH để deploy.
-      host: ['34.124.149.226'], // Địa chỉ IP hoặc hostname server.
-      ref: 'origin/main', // Branch Git để deploy.
+      user: 'thangl-vietis', // user to ssh
+      host: ['34.124.149.226'], // IP server.
+      ref: 'origin/main', // Branch Git to deploy
       repo: 'git@github.com:skydark3004/training-devops-be.git', // Repository Git.
-      path: '/home/thangl-vietis/deploy-pm2', // Thư mục trên server.
+      path: '/home/thangl-vietis/deploy-pm2', // directory to folder pm2 deploy
       'pre-deploy-local': "echo 'Deploying to development server...'",
-      'pre-deploy': 'pwd',
       'post-deploy': `sh deploy.sh staging`,
     },
   },

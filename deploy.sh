@@ -7,7 +7,7 @@ echo "Using Node version: $(node -v)"
 echo "Using NPM version: $(npm -v)"
 echo "Using PM2 version: $(pm2 -v)"
 
-#cd /home/thangl-vietis/deploy-pm2/current
+#Now we are at directory: /home/thangl-vietis/deploy-pm2/current
 
 #get the first parameter
 env=$1
