@@ -14,4 +14,4 @@ env=$1
 
 npm install
 npm run build
-pm2 restart ecosystem.config.js --env ${env}
+pm2 startOrRestart ecosystem.config.js --env ${env}
