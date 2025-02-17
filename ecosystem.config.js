@@ -9,11 +9,9 @@ module.exports = {
       // --- ENV ---
       // default pm2 get environment variables from options env if you don't specify env options
       env_development: {
-        NODE_ENV: 'development',
         PM2_ENV_FILE: '/home/thangl-vietis/deploy-pm2/.env-development',
       },
       env_staging: {
-        NODE_ENV: 'staging',
         PM2_ENV_FILE: '/home/thangl-vietis/deploy-pm2/.env-staging',
       },
 
