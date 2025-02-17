@@ -10,24 +10,11 @@ module.exports = {
       // default pm2 get environment variables from options env if you don't specify env options
       env_development: {
         NODE_ENV: 'development',
-        APP_PORT: 9999,
-        POSTGRESQL_USERNAME: 'root',
-        POSTGRESQL_PASSWORD: 'secret',
-        POSTGRESQL_HOST: 'localhost',
-        POSTGRESQL_PORT: 5432,
-        POSTGRESQL_NAME: 'learn-devops',
-        SECURE_JWT_SECRET_KEY: 'secret-key',
+        PM2_ENV_FILE: '/home/thangl-vietis/deploy-pm2/.env-development',
       },
       env_staging: {
         NODE_ENV: 'staging',
-        APP_PORT: 9999,
-        POSTGRESQL_USERNAME: 'root',
-        POSTGRESQL_PASSWORD: 'secret',
-        POSTGRESQL_HOST: 'localhost',
-        POSTGRESQL_PORT: 5432,
-        POSTGRESQL_NAME: 'learn-devops',
-        LOGGING_QUERY_SQL: true,
-        SECURE_JWT_SECRET_KEY: 'secret-key',
+        PM2_ENV_FILE: '/home/thangl-vietis/deploy-pm2/.env-staging',
       },
 
       watch: false, // watch change file
