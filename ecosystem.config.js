@@ -6,8 +6,6 @@ module.exports = {
       instances: '2', // default 1
       exec_mode: 'cluster', // mode to start your app, can be “cluster” or “fork”, default fork
 
-      // --- ENV ---
-      // default pm2 get environment variables from options env if you don't specify env options
       watch: false, // watch change file
       ignore_watch: ['node_modules', 'logs'],
 
