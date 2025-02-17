@@ -9,6 +9,9 @@ echo "Using PM2 version: $(pm2 -v)"
 
 #cd /home/thangl-vietis/deploy-pm2/current
 
+#get the first parameter
+env=$1
+
 npm install
 npm run build
-pm2 restart ecosystem.config.js
+pm2 restart ecosystem.config.js --env ${env}
