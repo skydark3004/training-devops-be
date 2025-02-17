@@ -8,7 +8,7 @@ module.exports = {
 
       // --- ENV ---
       // default pm2 get environment variables from options env if you don't specify env options
-      env: {
+      env_development: {
         NODE_ENV: 'development',
         APP_PORT: 9999,
         POSTGRESQL_USERNAME: 'root',
@@ -67,7 +67,7 @@ module.exports = {
       repo: 'git@github.com:skydark3004/training-devops-be.git', // Repository Git.
       path: '/home/thangl-vietis/deploy-pm2', // directory to folder pm2 deploy
       'pre-deploy-local': "echo 'Deploying to development server...'",
-      'post-deploy': `sh deploy.sh`,
+      'post-deploy': `sh deploy.sh development`,
     },
     staging: {
       user: 'thangl-vietis', // user to ssh
