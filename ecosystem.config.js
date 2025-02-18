@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'back-end',
+      //name: 'back-end',
       script: './dist/main.js',
       instances: '2', // default 1
       exec_mode: 'cluster', // mode to start your app, can be “cluster” or “fork”, default fork
