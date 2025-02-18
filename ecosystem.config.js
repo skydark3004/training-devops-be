@@ -1,3 +1,6 @@
+require('dotenv').config({ path: './.env' });
+console.log(process.env.POSTGRESQL_USERNAME);
+
 module.exports = {
   apps: [
     {
@@ -8,12 +11,12 @@ module.exports = {
 
       // --- ENV ---
       // default pm2 get environment variables from options env if you don't specify env options
-      env_development: {
+      /*       env_development: {
         env_file: '/home/thangl-vietis/deploy-pm2/.env-development',
       },
       env_staging: {
         env_file: '/home/thangl-vietis/deploy-pm2/.env-staging',
-      },
+      }, */
 
       watch: false, // watch change file
       ignore_watch: ['node_modules', 'logs'],
